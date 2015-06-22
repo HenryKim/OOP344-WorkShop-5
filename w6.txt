@@ -1,0 +1,182 @@
+Script started on Fri 21 Mar 2014 08:31:14 PM EDT
+hkim142@matrix:~/oop344/Workshop/w5> cat multiply.cpp matrix.h matrix.cpp
+#include <iostream>
+#include <cstdlib>
+#include "matrix.h"
+
+using namespace std;
+
+int main(){
+	int row, col, select;
+	bool on = true, on2 = true, on3;
+	Matrix matrix;
+	while (on != false){
+	cout<< "Number of rows ( 0 to exit)\t?\t";
+	cin>>row;
+	if(row == 0){ 
+		on = false;
+	}
+	else if( row <= 0 )
+	{
+		on2 = false;
+		cout<<"Error, Please Select again"<<endl;
+	}
+	
+	 if(on2 && on)
+	 {
+		 matrix.setRow(row);
+		 cout<< "Number of cols\t\t\t?\t";
+		 cin>>col;
+		 matrix.setCol(col);
+		 matrix.makeMatrix();
+		 matrix.setMatrix();
+		on3 = true;
+		while(on3)
+		{
+		cout<<"Pre (0) or Post (1) Multiply\t?\t";	
+		cin>>select;
+		if(select == 0 || select == 1)
+		{
+			cout<<"Vector?\t";
+			matrix.setVector(select);
+			cout<<"Result:\t";
+			matrix.calculate(select);
+			on3 = false;
+		}
+		else cout<<"Error, Please Select again"<<endl;
+		}
+	 }
+	}
+	return 0;
+}
+class Matrix{
+protected:
+	int* vector;
+	int** matrix;
+	
+	int row_, col_;
+public:
+	Matrix();
+	void setRow(int row) { row_ = row;}
+	void setCol(int col){
+		if(!col) 
+			col = 1;
+		col_ = col;}
+	void makeMatrix();
+	void setMatrix();
+	void setVector(int select);
+	void calculate(int select);
+	int matrixcalc();
+	~Matrix();
+};
+#include "matrix.h"
+#include <iostream>
+using namespace std;
+
+Matrix::Matrix() : vector(NULL), matrix(NULL) {}
+void Matrix::makeMatrix()
+{
+	matrix = new int*[row_];
+	for(int i = 0; i < row_; ++i)
+		matrix[i] = new int[col_];
+}
+void Matrix::setMatrix()
+{
+	for (int i = 0 ; i < row_; i ++)
+	{
+		cout<<"Row "<<i+1<<" ?\t";
+		for(int y= 0; y< col_; y++)
+		{
+			cin >> matrix[i][y];
+		}
+	}
+}
+void Matrix::setVector(int select)
+{
+	if (select == 0){
+		if(vector) {
+			delete [] vector;
+			vector = NULL;
+		}
+		vector = new int[row_ + 1];
+		for(int i = 0; i < row_; i++)
+		{
+			cin>> vector[i];
+		}
+	}
+	else if(select == 1)
+	{
+		if(vector) {
+			delete [] vector;
+			vector = NULL;
+		}
+		vector = new int[col_ + 1];
+		for(int i = 0; i < col_; i++)
+		{
+			cin>> vector[i];
+		}
+	}
+}
+void Matrix::calculate(int select)
+{
+	int sum = 0;
+	if(select == 1)
+	{
+		for(int i = 0 ; i  < row_; i++)
+		{
+			for(int y = 0 ;y < col_ ;y++)
+			{
+				sum = sum +	(matrix[i][y] * vector [y]);
+			}
+			cout<<sum<<" ";
+			sum = 0;	
+		}
+	cout<<endl;
+	}
+	else
+	{
+		for(int i = 0 ; i  < col_; i++)
+		{
+			for(int y = 0 ;y < row_ ;y++)
+			{
+				sum = sum +	(matrix[y][i] * vector [y]);
+			}
+			cout<<sum<<" ";
+			sum = 0;	
+		}
+	cout<<endl;
+	}
+}
+Matrix::~Matrix()
+{
+	if(matrix) {
+		delete [] matrix;
+		matrix = NULL;
+	}
+	if(vector) {
+		delete [] vector;
+		vector = NULL;
+	}
+}
+hkim142@matrix:~/oop344/Workshop/w5> a.out
+Number of rows ( 0 to exit)	?	4
+Number of cols			?	3
+Row 1 ?	1^H   2 4 5
+Row 2 ?	3 1 0
+Row 3 ?	1 1 1
+Row 4 ?	 1^H^H      1 0 5
+Pre (0) or Post (1) Multiply	?	1
+Vector?	6 7 8
+Result:	80 25 21 46 
+Number of rows ( 0 to exit)	?	2
+Number of cols			?	2
+Row 1 ?	2 4
+Row 2 ?	3 2
+Pre (0) or Post (1) Multiply	?	0
+Vector?	6 7
+Result:	33 38 
+Number of rows ( 0 to exit)	?	0
+hkim142@matrix:~/oop344/Workshop/w5> dxi[K[K[Kexit
+exit
+
+Script done on Fri 21 Mar 2014 08:32:20 PM EDT
